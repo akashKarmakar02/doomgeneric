@@ -281,8 +281,10 @@ void I_GetEvent(void)
     event_t event;
     int pressed;
     unsigned char key;
+    int buttons;
+    int dx;
+    int dy;
 
-    
 	while (DG_GetKey(&pressed, &key))
     {
         UpdateShiftStatus(pressed, key);
@@ -319,23 +321,19 @@ void I_GetEvent(void)
             {
                 D_PostEvent(&event);
             }
-            break;
         }
     }
 
-
-                /*
-            case SDL_MOUSEMOTION:
-                event.type = ev_mouse;
-                event.data1 = mouse_button_state;
-                event.data2 = AccelerateMouse(sdlevent.motion.xrel);
-                event.data3 = -AccelerateMouse(sdlevent.motion.yrel);
-                D_PostEvent(&event);
-                break;
-                */
+    while (DG_GetMouse(&buttons, &dx, &dy))
+    {
+        event.type = ev_mouse;
+        event.data1 = buttons;
+        event.data2 = dx;
+        event.data3 = dy;
+        D_PostEvent(&event);
+    }
 }
 
 void I_InitInput(void)
 {
 }
-
